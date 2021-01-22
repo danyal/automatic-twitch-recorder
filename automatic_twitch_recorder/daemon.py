@@ -132,6 +132,9 @@ class Daemon(HTTPServer):
 
     def _watcher_callback(self, returned_watcher):
         streamer_dict = returned_watcher.result()
+        if not streamer_dict:
+            return
+
         streamer = streamer_dict['user_info']['login']
         kill = streamer_dict['kill']
         cleanup = streamer_dict['cleanup']
