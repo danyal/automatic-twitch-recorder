@@ -18,6 +18,10 @@ RUN apk add --no-cache --virtual .build-deps git gcc musl-dev
 RUN pip install -r requirements.txt
 RUN apk del .build-deps git gcc musl-dev
 
+RUN apk add --no-cache tzdata
+
+ENV TZ America/Los_Angeles
+
 VOLUME /recordings
 
 CMD ["python", "docker.py"]
