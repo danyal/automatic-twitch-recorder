@@ -19,6 +19,7 @@ class Watcher:
         self.stream_title = self.streamer_dict['stream_info']['title']
         self.stream_quality = self.streamer_dict['preferred_quality']
         self.download_folder = download_folder
+        self.start_time = ""
 
     def quit(self):
         self.kill = True
@@ -27,7 +28,8 @@ class Watcher:
         self.cleanup = True
 
     def watch(self):
-        curr_time = datetime.datetime.now().strftime("%Y-%m-%d %H.%M.%S")
+        curr_time = datetime.datetime.now().strftime("%Y-%m-%d %-I.%M%p")
+        self.start_time = curr_time
         file_name = curr_time + " - " + self.streamer + " - " + get_valid_filename(self.stream_title) + ".ts"
         directory = self._formatted_download_folder(self.streamer_login) + os.path.sep
         if not os.path.exists(directory):
@@ -69,7 +71,7 @@ class Watcher:
                         # If data is empty the stream has ended
                         if not data:
                             break
-                        
+
                         out_file.write(data)
             except streamlink.StreamError as err:
                 print('StreamError: {0}'.format(err))  # TODO: test when this happens

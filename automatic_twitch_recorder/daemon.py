@@ -152,6 +152,9 @@ class Daemon(HTTPServer):
     def get_streamers(self):
         return list(self.watched_streamers.keys()), list(self.streamers.keys())
 
+    def get_streamers_full(self):
+        return self.watched_streamers, self.streamers
+
     def exit(self):
         self.kill = True
         for streamer in self.watched_streamers.values():

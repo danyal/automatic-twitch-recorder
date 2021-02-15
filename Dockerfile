@@ -23,5 +23,6 @@ RUN apk add --no-cache tzdata
 ENV TZ America/Los_Angeles
 
 VOLUME /recordings
+EXPOSE 1234
 
 CMD ["python", "docker.py"]

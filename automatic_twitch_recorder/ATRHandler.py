@@ -70,7 +70,15 @@ class ATRHandler(BaseHTTPRequestHandler):
             query_components = None
             challenge = None
             self._set_response()
-            self.wfile.write(bytes('Hello Stranger :)', 'utf-8'))
+
+            temp_streamers = self.server.get_streamers_full()
+            web_string = ""
+            web_string = "<div style='color:#a83232'>OFFLINE</div><hr><br>" + "<br>".join(temp_streamers[1]) + "<br><br><br><div style='color:#32a852'>LIVE</div><hr>"
+
+            for live in temp_streamers[0].keys():
+                web_string = web_string + "<br>" + live + " -- " + temp_streamers[0][live]['watcher'].start_time + " -- " + temp_streamers[0][live]['watcher'].stream_title
+
+            self.wfile.write(bytes("<div style='font-family:verdana'>" + web_string + "</div>", 'utf-8'))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
@@ -178,7 +186,7 @@ class ATRHandler(BaseHTTPRequestHandler):
         except ValueError:
             self.ok = False
             self.message['println'] = '\'' + args[0] + '\' is not valid.'
-    
+
     def cmd_download_folder(self, args):
         try:
             self.message['println'] = self.server.set_download_folder(str(args[0]).strip())
